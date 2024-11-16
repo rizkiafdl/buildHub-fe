@@ -11,12 +11,18 @@ import {
     SidebarMenuItem,
 } from "@/components/ui/sidebar"
 
+
 // Menu items.
 const items = [
     {
         title: "Home",
-        url: "#",
+        url: "/",
         icon: Home,
+    },
+    {
+        title: "Bidding",
+        url: "#",
+        icon: Search,
     },
     {
         title: "Inbox",
@@ -59,6 +65,7 @@ export function AppSidebar() {
                                 </SidebarMenuItem>
                             ))}
                         </SidebarMenu>
+
                     </SidebarGroupContent>
                 </SidebarGroup>
             </SidebarContent>

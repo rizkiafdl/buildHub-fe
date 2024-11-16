@@ -5,6 +5,7 @@ export default function MenuLayouts({ children }: { children: React.ReactNode })
     return (
         <SidebarProvider>
             <AppSidebar />
+
             <main>
                 <SidebarTrigger />
                 {children}

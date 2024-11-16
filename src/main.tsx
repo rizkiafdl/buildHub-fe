@@ -1,50 +1,71 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import './index.css'
+import { StrictMode } from "react"
+import { createRoot } from "react-dom/client"
+import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import "./index.css"
 
-import Ideas from '@/pages/Ideas'
-import Dummy from '@/pages/Dummy'
-import Menu from './pages/Menu'
+import Ideas from "@/pages/Ideas"
+import Dummy from "@/pages/Dummy"
+import Menu from "./pages/Menu"
+import BiddingPage from "./components/Modules/MenuPage/Bidding"
 
+import HomePage from "./components/Modules/MenuPage/Home"
+import InboxPage from "./components/Modules/MenuPage/Inbox"
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Dummy />
+    element: <Dummy />, // Your default page (landing page)
   },
   {
     path: "/ideas",
-    element: <Ideas />
+    element: <Ideas />, // Your default page (landing page)
   },
   {
-    element: <Menu />,
-    path: "/menu"
+    path: "/about",
+    element: <Ideas />, // Your default page (landing page)
   },
   {
-    element: <Dummy />,
-    path: "/about"
+    path: "/services",
+    element: <Ideas />, // Your default page (landing page)
   },
   {
-    element: <Dummy />,
-    path: "/services"
+    path: "/careers",
+    element: <Ideas />, // Your default page (landing page)
   },
   {
-    element: <Ideas />,
-    path: "/ideas"
+    path: "/contact",
+    element: <Ideas />, // Your default page (landing page)
   },
   {
-    element: <Dummy />,
-    path: "/careers"
-  },
-  {
-    element: <Dummy />,
-    path: "/contact"
+    path: "/menu",
+    element: <Menu />, // Persistent layout
+    children: [
+      {
+        path: "bidding", // Nested under "/menu"
+        element: <BiddingPage />,
+      },
+      {
+        path: "home", // Nested under "/menu"
+        element: <HomePage />,
+      },
+      {
+        path: "inbox", // Nested under "/menu"
+        element: <InboxPage />,
+      },
+      {
+        path: "careers", // Nested under "/menu"
+        element: <Dummy />,
+      },
+      {
+        path: "contact", // Nested under "/menu"
+        element: <Dummy />,
+      },
+    ],
   },
 ])
 
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <RouterProvider router={router} />
-  </StrictMode>,
+  </StrictMode>
 )
