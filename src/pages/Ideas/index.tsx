@@ -1,6 +1,6 @@
 import MainLayouts from "@/components/Layouts/MainLayouts";
 import HeroSection from "@/components/Modules/IdeasPage/HeroSection";
-import IdeasList from "@/components/Modules/IdeasPage/ListPost";
+import IdeasList from "@/components/Modules/IdeasPage/IdeasList";
 
 
 
