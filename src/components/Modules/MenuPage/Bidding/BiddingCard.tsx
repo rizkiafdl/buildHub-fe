@@ -1,131 +1,95 @@
 import {
   Card,
-  CardDescription,
+  CardContent,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 
-// Types
-type Image = {
-  id: number;
-  mime: string;
-  file_name: string;
-  url: string;
+type BiddingItems = {
+  title: string;
+  price: number;
+  desc: string;
+  img: string;
+  avail_seller: number;
+  isFavorite: boolean;
 };
 
-type IdeaData = {
-  id: number;
-  slug: string;
-  description: string;
-  small_image?: Image[];
-  medium_image?: Image[];
-  published_at?: string;
-  updated_at?: string;
-  created_at?: string;
-  title?: string;
-};
-
-type BiddingCardProps = {
-  data: IdeaData;
+type ListCardProps = {
+  data: BiddingItems;
   className?: string;
 };
 
-const BiddingCard = ({ data, className }: BiddingCardProps) => {
-  // Format date to be more readable
-  const formatDate = (dateString?: string) => {
-    if (!dateString) return '';
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    });
-  };
-
-
-  const getImageUrl = () => {
-    if (data.medium_image?.[0]?.url) {
-      return data.medium_image[0].url;
-    }
-    if (data.small_image?.[0]?.url) {
-      return data.small_image[0].url;
-    }
-    return 'https://i.ibb.co/3Cg6Rj1/toa-heftiba-q-S7-VNx3-H24-unsplash.jpg';
+const ListCard = ({ data, className }: ListCardProps) => {
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(price);
   };
 
   return (
-    <Card
-      className={`
-                group
-                relative
-                w-full 
-                aspect-[3/4]
-                overflow-hidden
-                transition-all
-                duration-300
-                hover:shadow-xl
-                rounded-lg
-                bg-white
-                ${className || ''}
-            `}
-    >
-      <div className="relative w-full h-[60%] overflow-hidden">
+    <Card className={`
+      group
+      relative
+      w-full 
+      h-96
+      overflow-hidden
+      transition-all
+      duration-300
+      hover:shadow-xl
+      rounded-lg
+      bg-white
+      flex
+      flex-col
+      ${className || ''}
+    `}>
+      <div className="relative w-full h-40 overflow-hidden shrink-0">
         <img
-          src={getImageUrl()}
-          alt={data.title || 'Card image'}
-          className="
-                        w-full 
-                        h-full 
-                        object-cover
-                        transition-transform
-                        duration-300
-                        group-hover:scale-105
-                    "
+          src={data.img}
+          alt={data.title}
+          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
           loading="lazy"
         />
-
-        <div className="
-                    absolute
-                    bottom-0
-                    left-0
-                    w-full
-                    h-1/4
-                    bg-gradient-to-t
-                    from-black/20
-                    to-transparent
-                "/>
+        <div className="absolute bottom-0 left-0 w-full h-1/4 bg-gradient-to-t from-black/20 to-transparent" />
       </div>
 
+      <div className="flex flex-col flex-grow p-3">
+        <CardHeader className="p-0 mb-2">
+          <CardTitle className="text-sm font-semibold h-10 line-clamp-2">
+            {data.title}
+          </CardTitle>
+        </CardHeader>
 
-      <CardHeader className="
-                h-[40%]
-                flex
-                flex-col
-                justify-between
-                p-4
-                space-y-2
-            ">
+        <CardContent className="p-0 space-y-2">
+          <p className="text-xs text-gray-600 h-10 line-clamp-2">
+            {data.desc}
+          </p>
+          <div className="space-y-1">
+            <div className="text-xs text-gray-600">
+              Available Sellers: {data.avail_seller}
+            </div>
+            <div className="text-base font-semibold text-orange-600">
+              {formatPrice(data.price)}
+            </div>
+          </div>
+        </CardContent>
 
-        <CardDescription className="
-                    text-sm
-                    text-muted-foreground
-                    font-medium
-                ">
-          {formatDate(data.published_at)}
-        </CardDescription>
-
-        <CardTitle className="
-                    text-base
-                    sm:text-lg
-                    font-semibold
-                    line-clamp-3
-                    leading-tight
-                ">
-          {data.title || 'Untitled'}
-        </CardTitle>
-      </CardHeader>
+        <CardFooter className="p-0 mt-auto">
+          <div className="flex justify-between items-center w-full">
+            <button className="px-3 py-1.5 bg-orange-500 text-white text-xs rounded-md hover:bg-orange-600 transition-colors">
+              Details
+            </button>
+            <button className={`p-1.5 rounded-full transition-colors ${data.isFavorite ? 'text-red-500' : 'text-gray-400'}`}>
+              ❤
+            </button>
+          </div>
+        </CardFooter>
+      </div>
     </Card>
   );
 };
 
-export default BiddingCard;
+export default ListCard;

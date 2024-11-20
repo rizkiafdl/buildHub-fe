@@ -4,6 +4,7 @@ import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbList,
+  BreadcrumbLink,
   BreadcrumbPage,
 } from "@/components/ui/breadcrumb"
 import { Separator } from "@/components/ui/separator"
@@ -12,12 +13,14 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
-import { Outlet, useLocation } from "react-router-dom"
+import { Outlet, useLocation, Link } from "react-router-dom"
 
 // Define a mapping of paths to breadcrumb labels
 const breadcrumbLabels: Record<string, string> = {
   "/": "Home",
   "/menu": "Menu",
+  "/menu/cart": "Cart",
+  "/menu/cart/order": "Order",
   "/menu/bidding": "Bidding",
   "/menu/inbox": "Inbox",
   "/menu/calendar": "Calendar",
@@ -52,9 +55,20 @@ const Menu = () => {
               <BreadcrumbList>
                 {breadcrumbs.map((breadcrumb, index) => (
                   <BreadcrumbItem key={breadcrumb.path}>
-                    <BreadcrumbPage className="line-clamp-1">
-                      {breadcrumb.label}
-                    </BreadcrumbPage>
+                    {index === breadcrumbs.length - 1 ? (
+                      <BreadcrumbPage className="line-clamp-1">
+                        {breadcrumb.label}
+                      </BreadcrumbPage>
+                    ) : (
+                      <Link
+                        to={breadcrumb.path}
+                        className="flex items-center hover:text-blue-600 transition-colors"
+                      >
+                        <BreadcrumbLink className="line-clamp-1">
+                          {breadcrumb.label}
+                        </BreadcrumbLink>
+                      </Link>
+                    )}
                     {index < breadcrumbs.length - 1 && (
                       <Separator orientation="vertical" className="mx-2 h-4" />
                     )}
