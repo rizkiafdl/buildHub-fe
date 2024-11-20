@@ -1,6 +1,8 @@
 import {
     Card,
+    CardContent,
     CardDescription,
+    CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
@@ -105,24 +107,45 @@ const ListCard = ({ data, className }: ListCardProps) => {
                 p-4
                 space-y-2
             ">
-
+                <CardTitle className="
+                    text-base
+                    sm:text-lg
+                    font-semibold
+                    line-clamp-8
+                    leading-tight
+                ">
+                    {/* {data.title || 'Untitled'} */}
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa, corrupti!
+                </CardTitle>
                 <CardDescription className="
                     text-sm
                     text-muted-foreground
                     font-medium
                 ">
-                    {formatDate(data.published_at)}
-                </CardDescription>
+                    <CardContent>
+                        <div>
+                            Nama peusahaan
+                        </div>
+                        <div>
+                            qty
+                        </div>
+                        <div>
+                            Harga dasar - bidding
+                        </div>
+                    </CardContent>
+                    <CardFooter>
 
-                <CardTitle className="
-                    text-base
-                    sm:text-lg
-                    font-semibold
-                    line-clamp-3
-                    leading-tight
-                ">
-                    {data.title || 'Untitled'}
-                </CardTitle>
+                        <div>
+                            {formatDate(data.published_at)} -  {formatDate(data.published_at)}
+                        </div>
+                        <div>
+                            next button
+                        </div>
+
+                    </CardFooter>
+
+
+                </CardDescription>
             </CardHeader>
         </Card>
     );
