@@ -7,61 +7,77 @@ import Ideas from "@/pages/Ideas"
 import Dummy from "@/pages/Dummy"
 import Menu from "./pages/Menu"
 import BiddingPage from "./components/Modules/MenuPage/Bidding"
+import ItemsPage from "@/components/Modules/MenuPage/Bidding/ItemsPage/itemsPage"
+import HomePage from "@/components/Modules/MenuPage/Home"
+import InboxPage from "@/components/Modules/MenuPage/Inbox"
 
-import HomePage from "./components/Modules/MenuPage/Home"
-import InboxPage from "./components/Modules/MenuPage/Inbox"
+import PaymentPage from "./components/Modules/MenuPage/Cart/OrderPage/PaymentPage/PaymentPage"
+import OrderPage from "./components/Modules/MenuPage/Cart/OrderPage/OrderPage"
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Dummy />, // Your default page (landing page)
+    element: <Dummy />
   },
   {
     path: "/ideas",
-    element: <Ideas />, // Your default page (landing page)
+    element: <Ideas />
   },
   {
     path: "/about",
-    element: <Ideas />, // Your default page (landing page)
+    element: <Ideas />
   },
   {
     path: "/services",
-    element: <Ideas />, // Your default page (landing page)
+    element: <Ideas />
   },
   {
     path: "/careers",
-    element: <Ideas />, // Your default page (landing page)
+    element: <Ideas />
   },
   {
     path: "/contact",
-    element: <Ideas />, // Your default page (landing page)
+    element: <Ideas />
   },
   {
     path: "/menu",
-    element: <Menu />, // Persistent layout
+    element: <Menu />,
     children: [
       {
-        path: "bidding", // Nested under "/menu"
+        path: "bidding",
         element: <BiddingPage />,
+        children: [
+          {
+            path: ":itemId", // Changed to use URL parameter
+            element: <ItemsPage />
+          }
+        ]
       },
       {
-        path: "home", // Nested under "/menu"
-        element: <HomePage />,
+        path: "home",
+        element: <HomePage />
       },
       {
-        path: "inbox", // Nested under "/menu"
-        element: <InboxPage />,
+        path: "inbox",
+        element: <InboxPage />
       },
       {
-        path: "careers", // Nested under "/menu"
-        element: <Dummy />,
-      },
-      {
-        path: "contact", // Nested under "/menu"
-        element: <Dummy />,
-      },
-    ],
-  },
+        path: "cart",
+        children: [
+          {
+            path: "order", // Changed to use URL parameter
+            element: <OrderPage />,
+            children: [
+              {
+                path: "payment", // Changed to use URL parameter
+                element: <PaymentPage />
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
 ])
 
 createRoot(document.getElementById("root")!).render(
