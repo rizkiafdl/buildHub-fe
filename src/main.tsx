@@ -8,10 +8,9 @@ import Dummy from "@/pages/Dummy"
 import Menu from "@/pages/Menu"
 import BiddingPage from "@/components/Modules/MenuPage/Bidding/BiddingPage"
 import ItemsPage from "@/components/Modules/MenuPage/Bidding/ItemsPage/itemsPage"
-// import HomePage from "@/components/Modules/MenuPage/Home"
 
-import PaymentPage from "@/components/Modules/MenuPage/Cart/OrderPage/PaymentPage/PaymentPage"
-import OrderPage from "@/components/Modules/MenuPage/Cart/OrderPage/OrderPage"
+import PaymentPage from "@/components/Modules/MenuPage/PaymentPage/PaymentPage"
+import OrderPage from "@/components/Modules/MenuPage/OrderPage/OrderPage"
 import CartList from "@/components/Modules/MenuPage/Cart/CartList"
 
 
