@@ -14,6 +14,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 const CartList = () => {
     const [cart, setCart] = useAtom(biddingCartAtom);
     const [total] = useAtom(cartTotalAtom);
+    
 
     const formatPrice = (price: number) => {
         return new Intl.NumberFormat('id-ID', {
