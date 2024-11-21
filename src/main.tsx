@@ -12,7 +12,8 @@ import ItemsPage from "@/components/Modules/MenuPage/Bidding/ItemsPage/itemsPage
 import PaymentPage from "@/components/Modules/MenuPage/PaymentPage/PaymentPage"
 import OrderPage from "@/components/Modules/MenuPage/OrderPage/OrderPage"
 import CartList from "@/components/Modules/MenuPage/Cart/CartList"
-import SuccPage from '@/components/Modules/MenuPage/SuccessPage/successPage';
+import SuccessPage from '@/components/Modules/MenuPage/SuccessPage/SuccessPage';
+
 
 const router = createBrowserRouter([
   {
@@ -67,7 +68,7 @@ const router = createBrowserRouter([
       },
       {
         path: "success",
-        element: <SuccPage/>
+        element: <SuccessPage/>
       }
 
     ]
