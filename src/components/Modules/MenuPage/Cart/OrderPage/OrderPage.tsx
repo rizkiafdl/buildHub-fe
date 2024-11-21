@@ -9,7 +9,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import React, { useState } from "react";
+import { useState } from "react";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -23,7 +23,7 @@ import {
   } from "@/components/ui/alert-dialog"
   
 
-const base_price = 15000000;
+// const base_price = 15000000;
 
 const Offer_lister = [
     {
