@@ -47,7 +47,7 @@ const BiddingList: React.FC = () => {
 
   const handleCardClick = (item: typeof dummyBiddingItems[0]) => {
     const slug = createSlug(item.title);
-    navigate(`/menu/bidding/${slug}`);
+    navigate(`/menu/home/${slug}`);
   };
   return (
     <div className="container mx-auto px-4 py-6">

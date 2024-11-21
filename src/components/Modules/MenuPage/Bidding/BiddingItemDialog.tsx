@@ -30,7 +30,7 @@ const BiddingItemDialog = ({ item, isOpen }: BiddingItemDialogProps) => {
     };
 
     const handleClose = () => {
-        navigate('/menu/bidding');
+        navigate('/menu/home');
     };
 
     const handleAddToCart = () => {
