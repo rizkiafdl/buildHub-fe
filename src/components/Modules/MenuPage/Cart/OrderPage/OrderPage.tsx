@@ -264,11 +264,6 @@ const Offer_lister = [
                             </AlertDialog>
                             {/* <Button>Choose Payment Method</Button> */}
                         </div>
-
-
-                        
-
-
                     </div>
                 </div>
             </div>

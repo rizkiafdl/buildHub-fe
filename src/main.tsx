@@ -8,11 +8,12 @@ import Dummy from "@/pages/Dummy"
 import Menu from "@/pages/Menu"
 import BiddingPage from "@/components/Modules/MenuPage/Bidding/BiddingPage"
 import ItemsPage from "@/components/Modules/MenuPage/Bidding/ItemsPage/itemsPage"
-import HomePage from "@/components/Modules/MenuPage/Home"
-import InboxPage from "@/components/Modules/MenuPage/Inbox"
+// import HomePage from "@/components/Modules/MenuPage/Home"
+
 import PaymentPage from "@/components/Modules/MenuPage/Cart/OrderPage/PaymentPage/PaymentPage"
 import OrderPage from "@/components/Modules/MenuPage/Cart/OrderPage/OrderPage"
-import CartList from "./components/Modules/MenuPage/Cart/CartList"
+import CartList from "@/components/Modules/MenuPage/Cart/CartList"
+
 
 const router = createBrowserRouter([
   {
@@ -44,7 +45,7 @@ const router = createBrowserRouter([
     element: <Menu />,
     children: [
       {
-        path: "bidding",
+        path: "home",
         element: <BiddingPage />,
         children: [
           {
@@ -54,28 +55,16 @@ const router = createBrowserRouter([
         ]
       },
       {
-        path: "home",
-        element: <HomePage />
-      },
-      {
-        path: "inbox",
-        element: <InboxPage />
-      },
-      {
         path: "cart",
-        element: <CartList />,
-        children: [
-          {
-            path: "order", 
-            element: <OrderPage />,
-            children: [
-              {
-                path: "payment", // Changed to use URL parameter
-                element: <PaymentPage />
-              }
-            ]
-          }
-        ]
+        element: <CartList />
+      },
+      {
+        path: "payment",
+        element: <PaymentPage />
+      },
+      {
+        path: "order",
+        element: <OrderPage />,
       }
     ]
   }

@@ -2,15 +2,10 @@ import * as React from "react"
 import {
   AudioWaveform,
   Blocks,
-  Calendar,
   Command,
-  Home,
   Inbox,
-  MessageCircleQuestion,
   Search,
-  Settings2,
   Sparkles,
-  Trash2,
   LucideIcon
 } from "lucide-react"
 
@@ -59,46 +54,20 @@ const data = {
       icon: Search,
     },
     {
-      title: "Bidding",
-      url: "/bidding",
+      title: "Home",
+      url: "/home",
       icon: Sparkles,
     },
     {
-      title: "Home",
-      url: "/home",
-      icon: Home,
-      isActive: true,
-    },
-    {
-      title: "Cart",
-      url: "/cart",
+      title: "Order",
+      url: "/order",
       icon: Inbox,
       badge: "10",
     },
     {
-      title: "Calendar",
-      url: "#",
-      icon: Calendar,
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-    },
-    {
-      title: "Templates",
-      url: "#",
+      title: "Cart",
+      url: "/cart",
       icon: Blocks,
-    },
-    {
-      title: "Trash",
-      url: "#",
-      icon: Trash2,
-    },
-    {
-      title: "Help",
-      url: "#",
-      icon: MessageCircleQuestion,
     },
   ] as NavItem[],
 }

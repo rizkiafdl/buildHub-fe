@@ -3,6 +3,7 @@ import BiddingList from './BiddingList';
 import BiddingItemDialog from './BiddingItemDialog';
 import dummyBiddingItems from '@/constant/listBiddingItem';
 import { Toaster } from "@/components/ui/toaster"
+import ImageCarousel from './ImageCarousel';
 // Define the route params interface
 interface BiddingParams {
     itemId: string;
@@ -22,6 +23,7 @@ const BiddingPage = () => {
 
     return (
         <div>
+            <ImageCarousel />
             <BiddingList />
             <BiddingItemDialog
                 item={selectedItem}

@@ -129,7 +129,8 @@ const CartList = () => {
                 <Button
                     className="bg-orange-500 hover:bg-orange-600"
                     onClick={() => {
-                        // Handle checkout
+                        console.log(cart)
+                        console.log(total)
                         console.log('Proceeding to checkout');
                     }}
                 >

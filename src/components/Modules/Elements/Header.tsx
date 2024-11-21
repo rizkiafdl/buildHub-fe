@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { atom, useAtom } from 'jotai';
-import EachUtils from '@/utils/EachUtils';
+import EachUtils from '@/hooks/EachUtils';
 import { LIST_NAVBAR } from "@/constant/listNavbar";
 import { Menu, X } from 'lucide-react';
 

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 const BiddingList: React.FC = () => {
   const [pageNumber, setPageNumber] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(5);
   const [sortBy, setSortBy] = useState('-published_at');
   const navigate = useNavigate()
   const paginatedAndSortedItems = useMemo(() => {
