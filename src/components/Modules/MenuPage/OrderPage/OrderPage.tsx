@@ -13,13 +13,12 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-  } from "@/components/ui/select"
-  
+} from "@/components/ui/select";
 
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+
 import {
     AlertDialog,
     AlertDialogAction,
@@ -30,188 +29,152 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
+} from "@/components/ui/alert-dialog";
 
-
-const base_price = 15000000
-
-const Offer_lister = [
-    {
-        "no": 1,
-        "shop_id": "BLDHB_INV_001",
-        "shop_name": "Depo Bangunan",
-        "logo_url": "https://play-lh.googleusercontent.com/sbg3YKC4ZINlhWyehnJQ0vEscjZuuE3l2OvKKdMmCPHR7txehW6fyjL7fCO6wuyih5E",
-        "offer_price": 25000000,
-        "offer_explanation": "We offer a competitive price due to our direct import from manufacturers and lower operational costs.",
-        "shipment_price": Math.floor(Math.random() * (2005000 - 1000000 + 1)) + 1000000
-    },
-    {
-        "no": 2,
-        "shop_id": "BLDHB_INV_002",
-        "shop_name": "Kawanlama",
-        "logo_url": "https://media.licdn.com/dms/image/v2/C4E0BAQF68WbjCLRrQA/company-logo_200_200/company-logo_200_200/0/1631327504284?e=2147483647&v=beta&t=0zIlgV5kxxsF9n2Y5R3axvH40wTEjnPYFFZnU-7wl8I",
-        "offer_price": 25100000,
-        "offer_explanation": "Our prices are more affordable because we provide bulk discounts and prioritize efficiency in our logistics.",
-        "shipment_price": Math.floor(Math.random() * (2300000 - 1000000 + 1)) + 1000000
-    },
-    {
-        "no": 3,
-        "shop_id": "BLDHB_INV_003",
-        "shop_name": "CV 99 Material",
-        "logo_url": "https://images.glints.com/unsafe/glints-dashboard.oss-ap-southeast-1.aliyuncs.com/company-logo/a2a3e7cfa01a8ecd3ee84d865a763b6e.png",
-        "offer_price": 25200000,
-        "offer_explanation": "Our lower prices stem from our long-standing partnerships with trusted suppliers and minimal overhead costs.",
-        "shipment_price": Math.floor(Math.random() * (2000000 - 1000000 + 1)) + 1000000
-    },
-    {
-        "no": 4,
-        "shop_id": "BLDHB_INV_004",
-        "shop_name": "Buildmart",
-        "logo_url": "https://media.licdn.com/dms/image/v2/C4E0BAQFMART5NUqjiQ/company-logo_200_200/company-logo_200_200/0/1630596157395?e=2147483647&v=beta&t=xCbIGCLu5zeMATZXNMzBPI27jvbxTJYRqdin3LFtjl4",
-        "offer_price": 25300000,
-        "offer_explanation": "We can offer cheaper prices due to our high-volume purchasing and efficient distribution network.",
-        "shipment_price": Math.floor(Math.random() * (2140000 - 1000000 + 1)) + 1000000
-    },
-    {
-        "no": 5,
-        "shop_id": "BLDHB_INV_005",
-        "shop_name": "Artha Bangunan",
-        "logo_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTV_tq0dUPwe8zqpqNuf2aDiUx5Elv8CzTBEA&s",
-        "offer_price": 25400000,
-        "offer_explanation": "Our prices are low because we operate a lean supply chain and leverage economies of scale.",
-        "shipment_price": Math.floor(Math.random() * (2200000 - 1000000 + 1)) + 1000000
-    },
-    {
-        "no": 6,
-        "shop_id": "BLDHB_INV_006",
-        "shop_name": "TB Sumber Berkah",
-        "logo_url": "https://images.tokopedia.net/img/cache/215-square/shops-1/2020/7/12/9091784/9091784_8be1375e-c491-4c03-ae69-2bb5b32a128b.jpg",
-        "offer_price": 25500000,
-        "offer_explanation": "By optimizing our procurement processes and cutting unnecessary expenses, we pass on the savings to our customers.",
-        "shipment_price": Math.floor(Math.random() * (1300000 - 1000000 + 1)) + 1000000
-    },
-    {
-        "no": 7,
-        "shop_id": "BLDHB_INV_007",
-        "shop_name": "CV Borcelle ",
-        "logo_url": "https://marketplace.canva.com/EAGH424qgOo/1/0/1600w/canva-merah-hitam-modern-minimalis-toko-bahan-bangunan-logo-9xm96GBua8I.jpg",
-        "offer_price": 25600000,
-        "offer_explanation": "Our competitive pricing comes from strategic sourcing and cost-saving initiatives that directly benefit our customers.",
-        "shipment_price": Math.floor(Math.random() * (1900000 - 1000000 + 1)) + 1000000
-    },
-    {
-        "no": 8,
-        "shop_id": "BLDHB_INV_008",
-        "shop_name": "d'Baja Bangunan",
-        "logo_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqtYAmkXrSTffEOU8FL08kgRJeOjcjSxNZig&s",
-        "offer_price": 25700000,
-        "offer_explanation": "We offer the best prices due to our extensive supplier network and efficient inventory management.",
-        "shipment_price": Math.floor(Math.random() * (1340000 - 1000000 + 1)) + 1000000
-    },
-    {
-        "no": 9,
-        "shop_id": "BLDHB_INV_009",
-        "shop_name": "Sentral Bangunan",
-        "logo_url": "https://orlansoft.com/wp-content/uploads/2019/08/g4354-1.png",
-        "offer_price": 25800000,
-        "offer_explanation": "Our pricing strategy focuses on minimizing markup and offering our customers the best value for their purchase.",
-        "shipment_price": Math.floor(Math.random() * (1510000 - 1000000 + 1)) + 1000000
-    },
-    {
-        "no": 10,
-        "shop_id": "BLDHB_INV_010",
-        "shop_name": "Sumber Makmur Bangunan",
-        "logo_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjb74WcKQC4XAc0XqJfKRvtadE-FLn98SKEEyTufAB2xsXovR-_EYhM4hR8YUZ5u6UG3g&usqp=CAU",
-        "offer_price": 25900000,
-        "offer_explanation": "We offer low prices because of our streamlined operations and strong relationships with manufacturers.",
-        "shipment_price": Math.floor(Math.random() * (2000000 - 1000000 + 1)) + 1000000
-    }
-]
-
-
+import { useAtom } from "jotai";
+import {
+    offerListAtom,
+    filteredOffersAtom,
+    selectedStoreAtom,
+    grandTotalAtom,
+    offerActions,
+} from "@/Atoms/OfferAtoms";
+import { biddingCartAtom, cartTotalAtom } from "@/Atoms/biddingAtoms";
+import { useEffect, useState } from "react";
+import { TableFooter } from "@/components/ui/table";
 const OrderPage = () => {
-    const [selectedStore, setSelectedStore] = useState<{
-        id: string;
-        store_name: string;
-        logo_url: string;
-        price: number;
-        shipment_price: number;
-    } | null>(null);
-    const [filteredOffers, setFilteredOffers] = useState(Offer_lister);
-    const [grandTotal, setGrandTotal] = useState<number>(0);
+    const [offerList] = useAtom(offerListAtom);
+    const [filteredOffers, setFilteredOffers] = useAtom(filteredOffersAtom);
+    const [selectedStore, setSelectedStore] = useAtom(selectedStoreAtom);
+    const [grandTotal, setGrandTotal] = useAtom(grandTotalAtom);
+    const [cart] = useAtom(biddingCartAtom);
+    const [cartTotal] = useAtom(cartTotalAtom);
 
-    const handleChoose = (shop_id: string, shop_name: string, logo_url: string, offer_price: number, shipment_price: number) => {
-    if (!selectedStore) {
-        setSelectedStore({
-            id: shop_id,
-            store_name: shop_name,
-            logo_url: logo_url,   // Storing the logo URL
-            price: offer_price,
-            shipment_price: shipment_price,
-        });
-        setGrandTotal(offer_price + shipment_price);
-        setFilteredOffers(filteredOffers.filter(shop => shop.shop_id !== shop_id));
-    }
-};
+    const [isLoading, setIsLoading] = useState(true);
+    const navigate = useNavigate();
+
+    const handleChoose = (shop_id: string) => {
+        if (!selectedStore) {
+            const store = filteredOffers.find((offer) => offer.shop_id === shop_id);
+            if (store) {
+                offerActions.handleChoose(
+                    store,
+                    setSelectedStore,
+                    setFilteredOffers,
+                    filteredOffers
+                );
+            }
+        }
+    };
 
     const handleReject = (shop_id: string) => {
-        setFilteredOffers(filteredOffers.filter(shop => shop.shop_id !== shop_id));
+        offerActions.handleReject(shop_id, setFilteredOffers, filteredOffers);
     };
 
     const handleAbort = () => {
+        offerActions.handleAbort(
+            selectedStore,
+            offerList,
+            setFilteredOffers,
+            filteredOffers,
+            setSelectedStore,
+            setGrandTotal
+        );
+    };
+
+    const handleSort = (type: "shipment" | "offer", direction: "asc" | "desc") => {
+        offerActions.handleSort(type, direction, setFilteredOffers, filteredOffers);
+    };
+
+    const goToPayment = () => {
         if (selectedStore) {
-            const newShop = Offer_lister.find(shop => shop.shop_id === selectedStore.id);
-            if (newShop) {
-                setFilteredOffers([...filteredOffers, newShop]);
-            }
-        }
-        setSelectedStore(null);
-        setGrandTotal(0);
-    };
-
-    const handleSort = (type: string, direction: string) => {
-        const sortedOffers = [...filteredOffers].sort((a, b) => {
-            const valueA = type === "shipment" ? a.shipment_price : a.offer_price;
-            const valueB = type === "shipment" ? b.shipment_price : b.offer_price;
-            return direction === "asc" ? valueA - valueB : valueB - valueA;
-        });
-        setFilteredOffers(sortedOffers);
-    };
-
-    
-    const navigate = useNavigate();
-      
-   const goToPayment = () => {
-    if (selectedStore) {
-        // Pass the updated selectedStore and grandTotal to the Payment page
-        navigate("/menu/payment", {
-            state: {
-                    selectedStore: selectedStore,
-                    grandTotal: grandTotal,
+            navigate("/menu/payment", {
+                state: {
+                    selectedStore,
+                    grandTotal,
                 },
             });
         }
     };
-    
+
+    useEffect(() => {
+        const timer = setTimeout(() => setIsLoading(false), 1000);
+        return () => clearTimeout(timer);
+    }, []);
+
+    if (isLoading) {
+        return (
+            <div className="flex items-center justify-center h-[80vh]">
+                <div className="flex flex-col items-center space-y-4">
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500"></div>
+                    <p className="text-gray-600">Loading order details...</p>
+                </div>
+            </div>
+        );
+    }
+
+    if (!cart || cart.length === 0) {
+        return (
+            <div className="flex flex-col items-center justify-center h-[80vh] p-4">
+                <div className="text-center space-y-4">
+                    <svg
+                        className="mx-auto h-24 w-24 text-gray-400"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        aria-hidden="true"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                        />
+                    </svg>
+                    <h2 className="text-2xl font-semibold text-gray-900">
+                        No Items in Cart
+                    </h2>
+                    <p className="text-gray-500">
+                        Please add items to your cart before proceeding with the order.
+                    </p>
+                    <Button
+                        className="mt-4"
+                        onClick={() => navigate("/menu/home")}
+                    >
+                        Go to Bidding
+                    </Button>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="p-4">
-            {/* Title and Sort Button */}
-            <div className="flex justify-between items-center mb-8">
-                <h1 className="text-3xl font-bold">Offering List</h1>
-                <div className="flex items-center gap-2"> 
-                    <p className="font-medium">Base Price : </p>
-                <div className=" w-auto border border-gray-300 rounded flex items-center justify-center">
-                    <span className="m-1 font-medium">Rp {base_price.toLocaleString()}</span>
+            <div className="mb-6">
+                <div className="flex justify-between items-center">
+                    <h1 className="text-3xl font-bold">Offering List</h1>
+                    <div className="bg-blue-50 p-4 rounded-lg shadow-sm">
+                        <div className="space-y-2">
+                            <p className="text-sm text-blue-700 flex justify-between">
+                                <span>Cart Items:</span>
+                                <span className="font-medium">{cart.length}</span>
+                            </p>
+                            <p className="text-sm text-blue-700 flex justify-between">
+                                <span>Cart Total:</span>
+                                <span className="font-medium">Rp {(cartTotal || 0).toLocaleString()}</span>
+                            </p>
+                        </div>
+                    </div>
                 </div>
+                <div className="flex items-center justify-end gap-2 mt-4">
                     <span className="font-medium">Sort by:</span>
                     <Select
                         onValueChange={(value) => {
-                            const [field, direction] = value.split("-");
-                            handleSort(field, direction);
+                            const [field, direction] = value.split("-") as [string, string];
+                            handleSort(field as "shipment" | "offer", direction as "asc" | "desc");
                         }}
                     >
-                        <SelectTrigger className="w-48 text-right">
+                        <SelectTrigger className="w-48">
                             <SelectValue placeholder="Select an Option" />
                         </SelectTrigger>
                         <SelectContent align="end">
@@ -223,8 +186,6 @@ const OrderPage = () => {
                     </Select>
                 </div>
             </div>
-
-            {/* ScrollArea for Table */}
             <ScrollArea className="h-[68vh] rounded-md border">
                 <Table>
                     <TableHeader>
@@ -238,7 +199,7 @@ const OrderPage = () => {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {filteredOffers.map((lister) => (
+                        {filteredOffers?.map((lister) => (
                             <TableRow key={lister.shop_id}>
                                 <TableCell className="font-medium">{lister.shop_id}</TableCell>
                                 <TableCell className="font-medium">
@@ -251,26 +212,48 @@ const OrderPage = () => {
                                         <p>{lister.shop_name}</p>
                                     </div>
                                 </TableCell>
-                                <TableCell className="font-medium">Rp {lister.shipment_price.toLocaleString()}</TableCell>
-                                <TableCell className="font-medium">Rp {lister.offer_price.toLocaleString()}</TableCell>
                                 <TableCell className="font-medium">
-                                    <p className="text-justify max-w-[300px]">{lister.offer_explanation}</p>
+                                    Rp {lister.shipment_price.toLocaleString()}
+                                </TableCell>
+                                <TableCell className="font-medium">
+                                    Rp {(cartTotal + lister.shipment_price).toLocaleString()}
+                                </TableCell>
+                                <TableCell className="font-medium">
+                                    <p className="text-justify max-w-[300px]">
+                                        {lister.offer_explanation}
+                                    </p>
                                 </TableCell>
                                 <TableCell>
                                     <div className="flex gap-2">
-                                        <Button onClick={() => handleChoose(lister.shop_id, lister.shop_name, lister.logo_url, lister.offer_price, lister.shipment_price)}>Choose</Button>
+                                        <Button
+                                            onClick={() =>
+                                                handleChoose(
+                                                    lister.shop_id
+                                                )
+                                            }
+                                        >
+                                            Choose
+                                        </Button>
                                         <AlertDialog>
-                                            <AlertDialogTrigger><Button className="bg-[#cc0000] hover:bg-[#a30000]">Reject</Button></AlertDialogTrigger>
+                                            <AlertDialogTrigger>
+                                                <Button className="bg-[#cc0000] hover:bg-[#a30000]">
+                                                    Reject
+                                                </Button>
+                                            </AlertDialogTrigger>
                                             <AlertDialogContent>
                                                 <AlertDialogHeader>
-                                                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                                    <AlertDialogTitle>Confirm Rejection</AlertDialogTitle>
                                                     <AlertDialogDescription>
-                                                        Are you absolutely sure you want to reject this offering? This action cannot be undone.
+                                                        Are you sure you want to reject this offer?
                                                     </AlertDialogDescription>
                                                 </AlertDialogHeader>
                                                 <AlertDialogFooter>
                                                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                                    <AlertDialogAction  className="bg-[#cc0000] hover:bg-[#a30000]" onClick={() => handleReject(lister.shop_id)}>Continue</AlertDialogAction>
+                                                    <AlertDialogAction
+                                                        onClick={() => handleReject(lister.shop_id)}
+                                                    >
+                                                        Reject
+                                                    </AlertDialogAction>
                                                 </AlertDialogFooter>
                                             </AlertDialogContent>
                                         </AlertDialog>
@@ -279,56 +262,41 @@ const OrderPage = () => {
                             </TableRow>
                         ))}
                     </TableBody>
+                    <TableFooter className="fixed flex bottom-0  w-full bg-white shadow-lg z-5">
+                        <div className="p-4 flex justify-self-center gap-10 items-center">
+                            <div>
+                                <span>Selected Store: </span>
+                                <span className="font-medium">
+                                    {selectedStore
+                                        ? `| ${selectedStore.id} | ${selectedStore.store_name}`
+                                        : "None"}
+                                </span>
+                                <span>
+
+                                    Rp {(grandTotal || 0).toLocaleString()}
+                                </span>
+                            </div>
+                            <div className="flex gap-4">
+                                <Button
+                                    className="bg-[#cc0000] hover:bg-[#a30000]"
+                                    onClick={handleAbort}
+                                    disabled={!selectedStore}
+                                >
+                                    Abort
+                                </Button>
+                                <Button
+                                    className="bg-green-600 hover:bg-green-500"
+                                    onClick={goToPayment}
+                                    disabled={!selectedStore}
+                                >
+                                    Proceed to Payment
+                                </Button>
+                            </div>
+                        </div>
+                    </TableFooter>
                 </Table>
             </ScrollArea>
 
-            {/* Floating Box */}
-            <div className="bg-[#fafafa] p-4 shadow-xl border rounded-[8px] mt-5 h-20 w-full">
-                <div className="flex items-center justify-between">
-                    <p className="font-semibold">
-                        Selected: {selectedStore ? `| ${selectedStore.id} | ${selectedStore.store_name}` : "None"}
-                    </p>
-                    <div className="flex gap-5 items-center">
-                        <p className="font-semibold text-lg">
-                            Grand Total: {selectedStore ? `Rp ${grandTotal.toLocaleString()}` : "0"}
-                        </p>
-
-                        <div className="flex gap-2">
-                            <AlertDialog>
-                                <AlertDialogTrigger><Button>Abort</Button></AlertDialogTrigger>
-                                <AlertDialogContent>
-                                    <AlertDialogHeader>
-                                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                                        <AlertDialogDescription>
-                                            Are you absolutely sure you want to abort your purchase?
-                                        </AlertDialogDescription>
-                                    </AlertDialogHeader>
-                                    <AlertDialogFooter>
-                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                        <AlertDialogAction onClick={handleAbort}>Continue</AlertDialogAction>
-                                    </AlertDialogFooter>
-                                </AlertDialogContent>
-                            </AlertDialog>
-
-                            <AlertDialog>
-                                <AlertDialogTrigger><Button className="bg-orange-500 hover:bg-orange-300">Checkout</Button></AlertDialogTrigger>
-                                <AlertDialogContent>
-                                    <AlertDialogHeader>
-                                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                                        <AlertDialogDescription>
-                                            Are you absolutely sure you want to Checkout?
-                                        </AlertDialogDescription>
-                                    </AlertDialogHeader>
-                                    <AlertDialogFooter>
-                                        <AlertDialogCancel>cancel</AlertDialogCancel>
-                                        <AlertDialogAction onClick={goToPayment}>Continue</AlertDialogAction>
-                                    </AlertDialogFooter>
-                                </AlertDialogContent>
-                            </AlertDialog>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     );
 };

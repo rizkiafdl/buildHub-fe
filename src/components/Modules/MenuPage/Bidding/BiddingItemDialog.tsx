@@ -7,7 +7,7 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 import { BiddingItems } from "@/types/bidding";
-import { biddingCartAtom, BiddingCartItem } from '@/components/Atoms/biddingAtoms';
+import { biddingCartAtom, BiddingCartItem } from '@/Atoms/biddingAtoms';
 import { useToast } from '@/hooks/use-toast';
 
 interface BiddingItemDialogProps {

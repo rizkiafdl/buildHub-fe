@@ -1,7 +1,4 @@
-// import { biddingCartAtom, cartTotalAtom, BiddingCartItem } from '@/components/Atoms/biddingAtoms'
-// import { Card } from "@/components/ui/card"
 import { useState, useEffect } from "react";
-import { useLocation } from 'react-router-dom';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { LocationOutline, HomeOutline, DocumentTextOutline,StorefrontOutline} from 'react-ionicons'
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
@@ -44,7 +41,11 @@ import {
   
 import { Textarea } from "@/components/ui/textarea";
 
-
+import { orderTrackingAtom } from '@/Atoms/orderTrackingAtom';
+import { generateOrderId, createInitialOrderTracking, updateOrderStatus } from '@/hooks/orderTracking';
+import { useAtom } from "jotai";
+import { grandTotalAtom, selectedStoreAtom } from "@/Atoms/OfferAtoms";
+import { cartTotalAtom } from "@/Atoms/biddingAtoms";
 
 const purchaser = [
     {
@@ -58,10 +59,6 @@ const purchaser = [
 
 const PaymentPage = () => {
 
-   
-    const location = useLocation();
-    const { selectedStore} = location.state || {};
-
     const calculateArrivalDate = (option: string): Date => {
         const today = new Date();
         const additionalDays = option === "express" ? 2 : 5;
@@ -71,9 +68,9 @@ const PaymentPage = () => {
     };
 
     const [shipmentOption, setShipmentOption] = useState<string>("normal");
+    const [selectedStore] = useAtom(selectedStoreAtom);
     const [shipmentPrice, setShipmentPrice] = useState<number>(selectedStore?.shipment_price || 0);
     const [guaranteedArrivalDate, setGuaranteedArrivalDate] = useState<Date>(() => calculateArrivalDate("normal"));
-    const [totalPrice, setTotalPrice] = useState<number>(0);
 
     const [paymentMethod, setPaymentMethod] = useState<string>("card");
     const [name, setName] = useState<string>("");
@@ -84,21 +81,47 @@ const PaymentPage = () => {
     const [cvc, setCvc] = useState<string>("");
     const [errors, setErrors] = useState<Record<string, string>>({});
 
+    const [, setOrderTracking] = useAtom(orderTrackingAtom);
+
+    const [grandTotal] = useAtom(grandTotalAtom);
+    const [cartTotal] = useAtom(cartTotalAtom);
+
+
+
+    const [priceBreakdown, setPriceBreakdown] = useState({
+        basePrice: 0,
+        shipmentPrice: 0,
+        tax: 0,
+        applicationFee: 10000,
+        handlingFee: 5000,
+        totalPrice: 0
+    });
+
+
     useEffect(() => {
         console.log("Shipment option changed:", shipmentOption);
         console.log("Shipment option changed:", shipmentOption);
     }, [shipmentOption,paymentMethod]);
 
     useEffect(() => {
-        // Hitung total harga
-        const tax = shipmentPrice * 0.11;
-        const applicationFee = 10000;
-        const handlingFee = 5000;
-        const grandTotal = shipmentPrice + tax + applicationFee + handlingFee;
+        const baseTotal = selectedStore ? selectedStore.price : 0;
+        const currentShipmentPrice = shipmentOption === "express"
+            ? (selectedStore?.shipment_price || 0) * 1.3
+            : (selectedStore?.shipment_price || 0);
+        const tax = currentShipmentPrice * 0.11;
 
-        // Perbarui totalPrice
-        setTotalPrice(grandTotal);
-    }, [shipmentPrice]);
+        const total = baseTotal + currentShipmentPrice + tax +
+            priceBreakdown.applicationFee + priceBreakdown.handlingFee;
+
+        setPriceBreakdown({
+            basePrice: baseTotal,
+            shipmentPrice: currentShipmentPrice,
+            tax,
+            applicationFee: 10000,
+            handlingFee: 5000,
+            totalPrice: total
+        });
+    }, [selectedStore, shipmentOption, cartTotal]);
 
     const validate = () => {
         const newErrors: Record<string, string> = {};
@@ -114,27 +137,54 @@ const PaymentPage = () => {
     };
 
     const navigate = useNavigate();
+
     const handleContinue = () => {
         if (validate()) {
-            // Submit data
-            // alert("Payment information submitted successfully!");
-            navigate("/menu/success")
+            const orderId = generateOrderId();
+            const initialTracking = createInitialOrderTracking(orderId);
+            setOrderTracking(initialTracking);
+
+            setTimeout(() => {
+                setOrderTracking(prev =>
+                    updateOrderStatus(
+                        prev!,
+                        'PAYMENT_CONFIRMED',
+                        `Payment of Rp ${grandTotal.toLocaleString()} confirmed via ${paymentMethod}`
+                    )
+                );
+
+                navigate("/menu/dashboard", {
+                    state: {
+                        selectedStore,
+                        orderId,
+                        grandTotal: priceBreakdown.totalPrice,
+                        shippingDetails: {
+                            option: shipmentOption,
+                            price: priceBreakdown.shipmentPrice,
+                            estimatedArrival: guaranteedArrivalDate
+                        },
+                        purchaserDetails: {
+                            name,
+                            city
+                        },
+                        priceBreakdown
+                    }
+                });
+            }, 2000);
         }
     };
 
+
     
     const handleShipmentChange = (option: string) => {
-        const newShipmentPrice = option === "express"
-            ? selectedStore ? selectedStore.shipment_price * 1.3 : 0
-            : selectedStore?.shipment_price || 0;
-    
         setShipmentOption(option);
+
+
+        const newShipmentPrice = option === "express"
+            ? (selectedStore?.shipment_price || 0) * 1.3
+            : selectedStore?.shipment_price || 0;
+
         setShipmentPrice(newShipmentPrice);
-    
-        // Update total price
-        const offerPrice = selectedStore?.price || 0;
-        setTotalPrice(offerPrice + newShipmentPrice);
-    
         setGuaranteedArrivalDate(calculateArrivalDate(option));
     };
 
@@ -225,7 +275,7 @@ const PaymentPage = () => {
                                         <TableCell>{selectedStore?.store_name}</TableCell>
                                         <TableCell>{lister.Purchase_ID}</TableCell>
                                         
-                                        <TableCell className="font-bold">Rp {selectedStore ? selectedStore.price.toLocaleString() : 0}</TableCell>
+                                                <TableCell className="font-bold">Rp {grandTotal ? grandTotal.toLocaleString() : 0}</TableCell>
                                         </TableRow>
                                     </TableBody>
                                 </Table>
@@ -257,7 +307,7 @@ const PaymentPage = () => {
                                             </SelectTrigger>
                                             <SelectContent>
                                                 <SelectItem value="normal">Normal</SelectItem>
-                                                <SelectItem value="express">Express</SelectItem>
+                                                    {/* <SelectItem value="express">Express</SelectItem> */}
                                             </SelectContent>
                                         </Select>
 
@@ -287,7 +337,7 @@ const PaymentPage = () => {
                                 {/* Shipment Cost */}
                                 <div className="flex justify-between px-4">
                                     <p className="text-m font-medium">Shipment Cost</p>
-                                    <p className="text-m font-medium">Rp {shipmentPrice.toLocaleString()}</p>
+                                        <p className="text-m font-medium">Rp {(shipmentPrice - (shipmentPrice * 0.11)).toLocaleString()}</p>
                                 </div>
 
                                 {/* Tax (11%) */}
@@ -313,7 +363,7 @@ const PaymentPage = () => {
                                 <div className="flex justify-between px-4">
                                     <p className="text-lg font-bold">Grand Total</p>
                                     <p className="text-lg font-bold mb-4">
-                                        Rp {totalPrice.toLocaleString()}
+                                            Rp {grandTotal.toLocaleString()}
                                     </p>
                                 </div>
                             </div>

@@ -49,8 +49,8 @@ const data = {
 
   navMain: [
     {
-      title: "Search",
-      url: "#",
+      title: "Dashboard",
+      url: "/dashboard",
       icon: Search,
     },
     {
@@ -59,16 +59,17 @@ const data = {
       icon: Sparkles,
     },
     {
+      title: "Cart",
+      url: "/cart",
+      icon: Blocks,
+    },
+    {
       title: "Order",
       url: "/order",
       icon: Inbox,
       badge: "10",
     },
-    {
-      title: "Cart",
-      url: "/cart",
-      icon: Blocks,
-    },
+
   ] as NavItem[],
 }
 

@@ -1,15 +1,17 @@
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
-
+import item1 from '@/assets/carousel/item-1.jpg';
+import item2 from '@/assets/carousel/item-2.jpg';
+import item3 from '@/assets/carousel/item-3.jpg';
 const ImageCarousel = ({ images = [] }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     // If no images provided, use placeholders
     const defaultImages = [
-        '/api/placeholder/800/600',
-        '/api/placeholder/800/600',
-        '/api/placeholder/800/600'
+        item1,
+        item2,
+        item3
     ];
 
     const displayImages = images.length > 0 ? images : defaultImages;

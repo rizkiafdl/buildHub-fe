@@ -14,6 +14,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { Outlet, useLocation, Link } from "react-router-dom"
+import OrderDashboard from "@/components/Modules/MenuPage/Dashboard/Dashboard"
 
 // Define a mapping of paths to breadcrumb labels
 const breadcrumbLabels: Record<string, string> = {
@@ -42,6 +43,9 @@ const Menu = () => {
       path,
     }
   })
+
+  // Check if we're at the root menu path
+  const isMenuRoot = location.pathname === '/menu';
 
   return (
     <SidebarProvider>
@@ -79,7 +83,7 @@ const Menu = () => {
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4">
-          <Outlet />
+          {isMenuRoot ? <OrderDashboard /> : <Outlet />}
         </div>
       </SidebarInset>
       <SidebarRight />

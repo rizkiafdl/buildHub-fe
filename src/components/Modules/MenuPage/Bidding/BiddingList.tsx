@@ -2,14 +2,23 @@ import React, { useState, useMemo } from 'react';
 import ListCard from "@/components/Modules/MenuPage/Bidding/BiddingCard"
 import dummyBiddingItems from '@/constant/listBiddingItem';
 import { useNavigate } from 'react-router-dom';
+import { Search } from 'lucide-react';
 
 const BiddingList: React.FC = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(5);
   const [sortBy, setSortBy] = useState('-published_at');
-  const navigate = useNavigate()
+  const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
+
   const paginatedAndSortedItems = useMemo(() => {
-    const sortedItems = [...dummyBiddingItems].sort((a, b) => {
+    // First filter items based on search term
+    const filteredItems = dummyBiddingItems.filter(item =>
+      item.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    // Then sort the filtered items
+    const sortedItems = [...filteredItems].sort((a, b) => {
       if (sortBy === '-published_at') {
         return b.price - a.price;
       }
@@ -18,9 +27,13 @@ const BiddingList: React.FC = () => {
 
     const startIndex = (pageNumber - 1) * pageSize;
     return sortedItems.slice(startIndex, startIndex + pageSize);
-  }, [pageNumber, pageSize, sortBy]);
+  }, [pageNumber, pageSize, sortBy, searchTerm]);
 
-  const totalPages = Math.ceil(dummyBiddingItems.length / pageSize);
+  const totalPages = Math.ceil(
+    dummyBiddingItems.filter(item =>
+      item.title.toLowerCase().includes(searchTerm.toLowerCase())
+    ).length / pageSize
+  );
 
   const handlePageSizeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setPageSize(Number(e.target.value));
@@ -38,6 +51,12 @@ const BiddingList: React.FC = () => {
   const handleNextPage = () => {
     setPageNumber(prev => Math.min(totalPages, prev + 1));
   };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    setPageNumber(1); // Reset to first page when searching
+  };
+
   const createSlug = (title: string) => {
     return title
       .toLowerCase()
@@ -49,13 +68,21 @@ const BiddingList: React.FC = () => {
     const slug = createSlug(item.title);
     navigate(`/menu/home/${slug}`);
   };
+
   return (
     <div className="container mx-auto px-4 py-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-        <span className="text-sm text-gray-600">
-          Page {pageNumber} - {pageSize} of total {totalPages}
-        </span>
-        <div className='flex flex-col sm:flex-row gap-4'>
+        <div className="relative w-full sm:w-64">
+          <input
+            type="text"
+            placeholder="Search items..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+            className="w-full pl-10 pr-4 py-2 border rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+          />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+        </div>
+        <div className="flex flex-col sm:flex-row gap-4">
           <label className="text-sm flex items-center">
             Show per page:
             <select
@@ -128,4 +155,4 @@ const BiddingList: React.FC = () => {
   );
 };
 
-export default BiddingList;
+export default BiddingList; 

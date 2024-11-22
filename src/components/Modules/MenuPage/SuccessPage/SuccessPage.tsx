@@ -10,7 +10,7 @@ const SuccPage = () => {
     const navigate = useNavigate();
 
     const handleGoBack = () => {
-        navigate("/menu/home"); // Redirects to the homepage (adjust the path if needed)
+      navigate("/menu/home"); 
     };
   return (
     <div className="flex flex-col items-center justify-center">

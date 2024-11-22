@@ -7,13 +7,15 @@ import {
     CardHeader,
     CardTitle
 } from "@/components/ui/card";
-import { biddingCartAtom, cartTotalAtom } from '@/components/Atoms/biddingAtoms';
+import { biddingCartAtom, cartTotalAtom } from '@/Atoms/biddingAtoms';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { useNavigate } from 'react-router-dom';
 
 const CartList = () => {
     const [cart, setCart] = useAtom(biddingCartAtom);
     const [total] = useAtom(cartTotalAtom);
+    const navigate = useNavigate();
     
 
     const formatPrice = (price: number) => {
@@ -133,6 +135,7 @@ const CartList = () => {
                         console.log(cart)
                         console.log(total)
                         console.log('Proceeding to checkout');
+                        navigate("/menu/order")
                     }}
                 >
                     Proceed to Checkout
